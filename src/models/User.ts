@@ -31,7 +31,7 @@ class User {
   allow_access: boolean;
 
   @Column()
-  avaliated: string;
+  status: string;
 
   @CreateDateColumn()
   created_at: Date;
