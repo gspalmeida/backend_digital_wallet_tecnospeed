@@ -12,7 +12,7 @@ interface Request {
   date: string;
   isMoneyIn: boolean;
 }
-class UpdateProvidedServiceService {
+class UpdateFinancialMovementService {
   public async execute({
     id,
     category,
@@ -37,6 +37,14 @@ class UpdateProvidedServiceService {
       throw new AppError('Criar nova categoria');
     }
 
+    const financialMovement = await financialMovementRepository.findOne({
+      where: { id },
+    });
+
+    if (!financialMovement) {
+      throw new AppError('FinancialMovement id not found', 401);
+    }
+
     await financialMovementRepository.update(
       { id },
       {
@@ -48,14 +56,7 @@ class UpdateProvidedServiceService {
       },
     );
 
-    const service = await financialMovementRepository.findOne({
-      where: { id },
-    });
-
-    if (!service) {
-      throw new AppError('FinancialMovement id not found', 401);
-    }
-    return service;
+    return financialMovement;
   }
 }
-export default UpdateProvidedServiceService;
+export default UpdateFinancialMovementService;

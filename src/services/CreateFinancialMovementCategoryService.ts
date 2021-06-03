@@ -16,12 +16,12 @@ class CreateFinancialMovementCategoryService {
 
     const checkFinancialMovementCategoryExists = await financialMovementCategoryRepository.findOne(
       {
-        where: { service_name: categoryName },
+        where: { movement_category_name: categoryName },
       },
     );
 
     if (checkFinancialMovementCategoryExists) {
-      throw new AppError('Service type already booked');
+      throw new AppError('Category already booked');
     }
 
     const movementCategory = financialMovementCategoryRepository.create({

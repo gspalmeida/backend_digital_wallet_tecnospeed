@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { getRepository } from 'typeorm';
 import FinancialMovement from '../models/FinancialMovement';
-import ServiceType from '../models/FinancialMovementCategory';
+import FinancialMovementCategory from '../models/FinancialMovementCategory';
 import AppError from '../errors/AppError';
 
 interface Request {
@@ -12,7 +12,7 @@ interface Request {
   date: string;
   isMoneyIn: boolean;
 }
-class CreateProviderService {
+class CreateFinancialMovementService {
   public async execute({
     userId,
     category,
@@ -22,7 +22,9 @@ class CreateProviderService {
     isMoneyIn,
   }: Request): Promise<FinancialMovement> {
     const financialMovementRepository = getRepository(FinancialMovement);
-    const financialMovementCategoryRepository = getRepository(ServiceType);
+    const financialMovementCategoryRepository = getRepository(
+      FinancialMovementCategory,
+    );
 
     const checkMovementCategoryExists = await financialMovementCategoryRepository.findOne(
       {
@@ -35,7 +37,7 @@ class CreateProviderService {
       throw new AppError('Criar nova categoria');
     }
 
-    const service = financialMovementRepository.create({
+    const financialMovement = financialMovementRepository.create({
       user_id: userId,
       movement_category: category,
       description,
@@ -44,9 +46,9 @@ class CreateProviderService {
       isMoneyIn,
     });
 
-    await financialMovementRepository.save(service);
+    await financialMovementRepository.save(financialMovement);
 
-    return service;
+    return financialMovement;
   }
 }
-export default CreateProviderService;
+export default CreateFinancialMovementService;
