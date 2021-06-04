@@ -1,7 +1,10 @@
 /* eslint-disable camelcase */
 import { Router } from 'express';
 import multer from 'multer';
+import { getRepository } from 'typeorm';
 import uploadConfig from '../config/upload';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import User from '../models/User';
 
 import CreateUserService from '../services/CreateUserService';
 
@@ -35,5 +38,16 @@ usersRouter.post('/', upload.single('avatar'), async (request, response) => {
   delete user.password;
 
   return response.json(user);
+});
+
+usersRouter.get('/saldo', ensureAuthenticated, async (request, response) => {
+  const financialMovementCategoryRepository = getRepository(User);
+
+  const userData = await financialMovementCategoryRepository.findOneOrFail({
+    where: { id: request.user.id },
+  });
+
+  const { walletBalance } = userData;
+  return response.json(walletBalance);
 });
 export default usersRouter;
