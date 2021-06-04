@@ -16,7 +16,7 @@ class FinancialMovement {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   movement_category: string;
 
   @Column()
