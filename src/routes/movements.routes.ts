@@ -66,7 +66,6 @@ movementsRouter.post('/', ensureAuthenticated, async (request, response) => {
 
   return response.json(financialMovement);
 });
-export default movementsRouter;
 
 movementsRouter.put('/:id', ensureAuthenticated, async (request, response) => {
   const { category, description, value, date, isMoneyIn } = request.body;
@@ -97,3 +96,5 @@ movementsRouter.delete(
     return response.sendStatus(200);
   },
 );
+
+export default movementsRouter;
