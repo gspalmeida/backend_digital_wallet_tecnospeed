@@ -26,11 +26,13 @@ class CreateFinancialMovementService {
       FinancialMovementCategory,
     );
 
+    console.log('antes de checar');
     const checkMovementCategoryExists = await financialMovementCategoryRepository.findOne(
       {
         where: { movement_category_name: category },
       },
     );
+    console.log(checkMovementCategoryExists);
 
     if (!checkMovementCategoryExists) {
       // TODO Criar lógica para cadastrar novas categorias diretamente pela movimentação financeira
@@ -39,7 +41,7 @@ class CreateFinancialMovementService {
 
     const financialMovement = financialMovementRepository.create({
       user_id: userId,
-      movement_category: category,
+      movement_category: checkMovementCategoryExists.id,
       description,
       value,
       movement_date: date,
