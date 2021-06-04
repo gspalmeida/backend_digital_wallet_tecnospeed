@@ -1,9 +1,9 @@
-/* eslint-disable camelcase */
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import moment from 'moment';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import FinancialMovement from '../models/FinancialMovement';
+import User from '../models/User';
 
 import CreateFinancialMovementService from '../services/CreateFinancialMovementService';
 import UpdateFinancialMovementService from '../services/UpdateFinancialMovementService';
@@ -52,6 +52,7 @@ movementsRouter.get('/', ensureAuthenticated, async (request, response) => {
 });
 
 movementsRouter.post('/', ensureAuthenticated, async (request, response) => {
+  const userRepository = getRepository(User);
   const { category, description, value, date, isMoneyIn } = request.body;
   const createFinancialMovement = new CreateFinancialMovementService();
 
@@ -63,6 +64,24 @@ movementsRouter.post('/', ensureAuthenticated, async (request, response) => {
     date,
     isMoneyIn,
   });
+  const userData = await userRepository.findOneOrFail({
+    where: { id: request.user.id },
+  });
+  const { walletBalance: oldWalletBalance } = userData;
+  let walletBalance = 0;
+  if (isMoneyIn === true) {
+    walletBalance = parseFloat(oldWalletBalance) + parseFloat(value);
+  } else {
+    walletBalance = parseFloat(oldWalletBalance) - parseFloat(value);
+  }
+  const newWalletBalance = walletBalance.toString();
+
+  await userRepository.update(
+    { id: request.user.id },
+    {
+      walletBalance: newWalletBalance,
+    },
+  );
 
   return response.json(financialMovement);
 });
