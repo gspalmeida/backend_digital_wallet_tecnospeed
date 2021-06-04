@@ -14,10 +14,10 @@ export class SetupInicialDB1622660718800 implements MigrationInterface {
       `CREATE TABLE "financial_movement" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "movement_category" uuid NOT NULL, "description" character varying NOT NULL, "user_id" uuid NOT NULL, "value" character varying NOT NULL, "isMoneyIn" boolean NOT NULL, "movement_date" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_b05b56da58e9031b6f5621fcf38" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `ALTER TABLE "financial_movement" ADD CONSTRAINT "FK_4d84a63d0a61df26650e1b2d310" FOREIGN KEY ("movement_category") REFERENCES "financial_movement_category"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "financial_movement" ADD CONSTRAINT "FK_4d84a63d0a61df26650e1b2d310" FOREIGN KEY ("movement_category") REFERENCES "financial_movement_category"("id") ON DELETE SET NULL ON UPDATE CASCADE`,
     );
     await queryRunner.query(
-      `ALTER TABLE "financial_movement" ADD CONSTRAINT "FK_7459ba156e8519eeb49c18e3ccb" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "financial_movement" ADD CONSTRAINT "FK_7459ba156e8519eeb49c18e3ccb" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE CASCADE`,
     );
   }
 
