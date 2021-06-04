@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 import FinancialMovement from '../models/FinancialMovement';
 import FinancialMovementCategory from '../models/FinancialMovementCategory';
 import AppError from '../errors/AppError';
+import CreateFinancialMovementCategoryService from './CreateFinancialMovementCategoryService';
 
 interface Request {
   id: string;
@@ -26,15 +27,19 @@ class UpdateFinancialMovementService {
       FinancialMovementCategory,
     );
 
-    const checkMovementCategoryExists = await financialMovementCategoryRepository.findOne(
+    let checkMovementCategoryExists = await financialMovementCategoryRepository.findOne(
       {
         where: { movement_category_name: category },
       },
     );
 
     if (!checkMovementCategoryExists) {
-      // TODO Criar lógica para cadastrar novas categorias diretamente pela movimentação financeira
-      throw new AppError('Criar nova categoria');
+      const createFinancialMovementCategory = new CreateFinancialMovementCategoryService();
+
+      const movementCategory = await createFinancialMovementCategory.execute({
+        categoryName: category,
+      });
+      checkMovementCategoryExists = movementCategory;
     }
 
     const financialMovement = await financialMovementRepository.findOne({
