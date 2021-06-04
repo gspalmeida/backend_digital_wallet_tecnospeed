@@ -4,6 +4,7 @@ import { getRepository } from 'typeorm';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import FinancialMovementCategory from '../models/FinancialMovementCategory';
 import CreateFinancialMovementCategoryService from '../services/CreateFinancialMovementCategoryService';
+import UpdateFinancialMovementCategoryService from '../services/UpdateFinancialMovementCategoryService';
 
 const movementCategoriesRouter = Router();
 
@@ -34,6 +35,36 @@ movementCategoriesRouter.post(
     );
 
     return response.json(financialMovementCategory);
+  },
+);
+
+movementCategoriesRouter.put(
+  '/:id',
+  ensureAuthenticated,
+  async (request, response) => {
+    const { id } = request.params;
+    const { categoryName } = request.body;
+
+    const updateServiceType = new UpdateFinancialMovementCategoryService();
+
+    const service = await updateServiceType.execute({
+      id,
+      categoryName,
+    });
+
+    return response.json(service);
+  },
+);
+
+movementCategoriesRouter.delete(
+  '/:id',
+  ensureAuthenticated,
+  async (request, response) => {
+    const { id } = request.params;
+    const serviceTypeRepository = getRepository(FinancialMovementCategory);
+
+    await serviceTypeRepository.delete(id);
+    response.sendStatus(200);
   },
 );
 
