@@ -3,9 +3,14 @@
 ##### Descrição
 Projeto criado para a avaliação de conhecimento técnico da TecnoSpeed para a vaga de Node.js (mas também ligada a front).
 
-**Farei o deploy do backend no freetier da AWS, e abaixo segue o link para acesso do front (integrado a esse backend).**
+**Deploy do BackEnd feito na Heroku, e acessível no link abaixo:**
 
-**Link:** [Acessar o Front Online (Disponível a Partir de Sábado)](linkInvalido)
+**Link:** [Acessar API Backend](https://tecnospeeddigitalwallet.herokuapp.com/)
+
+**Deploy do FrontEnd feito no Netlify, e acessível no link abaixo:**
+
+**Link:** [Acessar FrontEnd](https://frontend-digital-wallet.netlify.app/)
+
 
 Credênciais de acesso:
 
@@ -13,22 +18,36 @@ Credênciais de acesso:
 Email: admin@email.com
 Senha: senha123
 
-**Usuário:** Da pra criar um tbm e aprovar ele pelo de admin...
+**Usuário:**
 Email: user@email.com
 Senha: senha123
 
 ------------
 
-## Instalação
+## Setup Inicial do Projeto: Dentro da pasta do projeto (após clonar o repositório)
 
-Dentro da pasta do projeto (após clonar o repositório) executar:
-###### `yarn install` Para Instalar as dependencias
+**Instale as Dependencias do projeto:**
+###### `yarn install`
 
-###### `cp .env_example .env` Para criar as configurações do ambiente (preencher apropriadamente as variáveis de acordo com as configurações locais)
+**Crie as configurações do ambiente (preencher apropriadamente as variáveis no .env de acordo com as configurações locais):**
+###### `cp .env_example .env`
 
-###### `yarn typeorm migration:run` Para preparar o banco
+**Rode as migrations para preparar o Banco de Dados:**
+###### `yarn typeorm migration:run`
 
-###### `yarn dev:server` Para levantar o servidor localmente
+**Conete-se ao banco e crie o primeiro administrador:**
+###### `INSERT INTO public.admins (avatar,name,email,"password") VALUES ('464bd0970bc3ee960572-admin.jpeg','Primeiro Administrador','admin@email.com','$2a$08$lFeq6mTq9Z.3MMF0ybYwBu1LkyRZfJovCwoUN14GMLRN0BK6KluJS');` Query para criar o primeiro administrador **Email: admin@email.com || Senha: senha123**
+
+**Levante o servidor de Desenvolvimento: (Após esse comando o backend já estará funcionando, mas caso queira o ambiente de produção os passos estarão abaixo**
+###### `yarn dev:server`
+
+**Para levantar o ambiente de produção é necessário reconfigurar TYPEORM_ENTITIES e TYPEORM_MIGRATIONS no .env de "src" para "dist" e a extensão dos arquivos de ".ts" para ".js"**
+
+**Faça o Build da Aplicação:**
+###### `yarn build`
+
+**Levante o servidor de Produção:**
+###### `yarn start`
 
 
 ---------
@@ -43,7 +62,7 @@ Dentro da pasta do projeto (após clonar o repositório) executar:
 
 ### Funcionalidades Integradas ao Front:
  - **Cadastro de Usuários** com upload de Avatar; 
- - **Moderação de Usuários** pelo Administrador (Cadastro de Administrador apenas pela API); [Ver Tela](https://github.com/gspalmeida/frontend_digital_wallet_tecnospeed/blob/main/screenshots/HomeAdmin.png?raw=true)
+ - **Moderação de Usuários** pelo Administrador (Cadastro de Administrador apenas pela API ou diretamente pelo banco **Query para criação de admin no "Setup Inicial do Projeto"** ); [Ver Tela](https://github.com/gspalmeida/frontend_digital_wallet_tecnospeed/blob/main/screenshots/HomeAdmin.png?raw=true)
  - Login de Usuários e Administradores pela mesma tela;
  - **Criação de Categorias** para as movimentações financeiras da carteira; [Ver Tela](https://github.com/gspalmeida/frontend_digital_wallet_tecnospeed/blob/main/screenshots/Cria%C3%A7%C3%A3oDeCategorias.png?raw=true)
  - Modal para **Edição de Categorias**;[Ver Tela](https://github.com/gspalmeida/frontend_digital_wallet_tecnospeed/blob/main/screenshots/ModalEdi%C3%A7%C3%A3oCategorias.png?raw=true)
