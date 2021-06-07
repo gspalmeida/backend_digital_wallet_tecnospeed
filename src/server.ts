@@ -29,6 +29,6 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     message: 'Internal Server Error',
   });
 });
-app.listen(1919, () => {
-  console.log('Server Started on port 1919');
+app.listen(process.env.PORT || 1919, () => {
+  console.log('Server Started on port', process.env.POR);
 });
