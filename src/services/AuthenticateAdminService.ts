@@ -21,7 +21,6 @@ class AuthenticateAdminService {
 
     const admin = await adminRepository.findOne({ where: { email } });
     if (admin) {
-      console.log(admin);
       const passwordMatched = await compare(password, admin.password);
       if (!passwordMatched) {
         throw new AppError('Incorrect email/password combination', 401);

@@ -1,8 +1,7 @@
-console.log('process.env.TYPEORM_DATABASE', process.env.TYPEORM_DATABASE);
 module.exports = {
   type: 'postgres',
   url: process.env.TYPEORM_DATABASE,
-  ssl: true,
+  ssl: false,
   entities: [
     process.env.TYPEORM_ENTITIES
   ],
